@@ -1,0 +1,191 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ExamDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Answer">
+    <Key>
+      <PropertyRef Name="AnswerID" />
+    </Key>
+    <Property Name="AnswerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PaperID" Type="Int32" Nullable="false" />
+    <Property Name="StuID" Type="Int32" Nullable="false" />
+    <Property Name="TeacherID" Type="Int32" />
+    <Property Name="AnswerScore" Type="Int32" />
+    <Property Name="AnswerTime" Type="DateTime" Precision="3" />
+    <Property Name="SubmitTime" Type="DateTime" Precision="3" />
+    <Property Name="BatchTime" Type="DateTime" Precision="3" />
+    <Property Name="AnswerState" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Paper" Relationship="Self.FK__Answer__PaperID__1DE57479" FromRole="Answer" ToRole="Paper" />
+    <NavigationProperty Name="Student" Relationship="Self.FK__Answer__StuID__1ED998B2" FromRole="Answer" ToRole="Student" />
+    <NavigationProperty Name="Teacher" Relationship="Self.FK__Answer__TeacherI__1FCDBCEB" FromRole="Answer" ToRole="Teacher" />
+    <NavigationProperty Name="Detail" Relationship="Self.FK__Detail__AnswerID__20C1E124" FromRole="Answer" ToRole="Detail" />
+  </EntityType>
+  <EntityType Name="Detail">
+    <Key>
+      <PropertyRef Name="DetailID" />
+    </Key>
+    <Property Name="DetailID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="AnswerID" Type="Int32" Nullable="false" />
+    <Property Name="TopicID" Type="Int32" Nullable="false" />
+    <Property Name="DetailAnswer" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Answer" Relationship="Self.FK__Detail__AnswerID__20C1E124" FromRole="Detail" ToRole="Answer" />
+    <NavigationProperty Name="Topic" Relationship="Self.FK__Detail__TopicID__21B6055D" FromRole="Detail" ToRole="Topic" />
+  </EntityType>
+  <EntityType Name="Paper">
+    <Key>
+      <PropertyRef Name="PaperID" />
+    </Key>
+    <Property Name="PaperID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PaperName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="PaperExplain" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="PaperTime" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Answer" Relationship="Self.FK__Answer__PaperID__1DE57479" FromRole="Paper" ToRole="Answer" />
+    <NavigationProperty Name="Topic" Relationship="Self.FK__Topic__PaperID__22AA2996" FromRole="Paper" ToRole="Topic" />
+  </EntityType>
+  <EntityType Name="Student">
+    <Key>
+      <PropertyRef Name="StuID" />
+    </Key>
+    <Property Name="StuID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="StuName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="StuLoginName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="StuLoginPwd" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="StuSex" Type="Boolean" Nullable="false" />
+    <Property Name="StuPhone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="StuEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="StuGrade" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Answer" Relationship="Self.FK__Answer__StuID__1ED998B2" FromRole="Student" ToRole="Answer" />
+  </EntityType>
+  <EntityType Name="Teacher">
+    <Key>
+      <PropertyRef Name="TeacherID" />
+    </Key>
+    <Property Name="TeacherID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TeacherName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="TeacherLoginName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="TeacherLoginPwd" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="TeacherPhone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="TeacherEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Answer" Relationship="Self.FK__Answer__TeacherI__1FCDBCEB" FromRole="Teacher" ToRole="Answer" />
+  </EntityType>
+  <EntityType Name="Topic">
+    <Key>
+      <PropertyRef Name="TopicID" />
+    </Key>
+    <Property Name="TopicID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TopicExplain" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="TopicScore" Type="Int32" Nullable="false" />
+    <Property Name="TopicType" Type="Int32" Nullable="false" />
+    <Property Name="TopicA" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="TopicB" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="TopicC" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="TopicD" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="TopicSort" Type="Int32" Nullable="false" />
+    <Property Name="TopicAnswer" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="PaperID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Detail" Relationship="Self.FK__Detail__TopicID__21B6055D" FromRole="Topic" ToRole="Detail" />
+    <NavigationProperty Name="Paper" Relationship="Self.FK__Topic__PaperID__22AA2996" FromRole="Topic" ToRole="Paper" />
+  </EntityType>
+  <Association Name="FK__Answer__PaperID__1DE57479">
+    <End Role="Paper" Type="Self.Paper" Multiplicity="1" />
+    <End Role="Answer" Type="Self.Answer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Paper">
+        <PropertyRef Name="PaperID" />
+      </Principal>
+      <Dependent Role="Answer">
+        <PropertyRef Name="PaperID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Answer__StuID__1ED998B2">
+    <End Role="Student" Type="Self.Student" Multiplicity="1" />
+    <End Role="Answer" Type="Self.Answer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Student">
+        <PropertyRef Name="StuID" />
+      </Principal>
+      <Dependent Role="Answer">
+        <PropertyRef Name="StuID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Answer__TeacherI__1FCDBCEB">
+    <End Role="Teacher" Type="Self.Teacher" Multiplicity="0..1" />
+    <End Role="Answer" Type="Self.Answer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Teacher">
+        <PropertyRef Name="TeacherID" />
+      </Principal>
+      <Dependent Role="Answer">
+        <PropertyRef Name="TeacherID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Detail__AnswerID__20C1E124">
+    <End Role="Answer" Type="Self.Answer" Multiplicity="1" />
+    <End Role="Detail" Type="Self.Detail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Answer">
+        <PropertyRef Name="AnswerID" />
+      </Principal>
+      <Dependent Role="Detail">
+        <PropertyRef Name="AnswerID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Detail__TopicID__21B6055D">
+    <End Role="Topic" Type="Self.Topic" Multiplicity="1" />
+    <End Role="Detail" Type="Self.Detail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Topic">
+        <PropertyRef Name="TopicID" />
+      </Principal>
+      <Dependent Role="Detail">
+        <PropertyRef Name="TopicID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Topic__PaperID__22AA2996">
+    <End Role="Paper" Type="Self.Paper" Multiplicity="1" />
+    <End Role="Topic" Type="Self.Topic" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Paper">
+        <PropertyRef Name="PaperID" />
+      </Principal>
+      <Dependent Role="Topic">
+        <PropertyRef Name="PaperID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="ExamDBEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Answer" EntityType="Self.Answer" />
+    <EntitySet Name="Detail" EntityType="Self.Detail" />
+    <EntitySet Name="Paper" EntityType="Self.Paper" />
+    <EntitySet Name="Student" EntityType="Self.Student" />
+    <EntitySet Name="Teacher" EntityType="Self.Teacher" />
+    <EntitySet Name="Topic" EntityType="Self.Topic" />
+    <AssociationSet Name="FK__Answer__PaperID__1DE57479" Association="Self.FK__Answer__PaperID__1DE57479">
+      <End Role="Paper" EntitySet="Paper" />
+      <End Role="Answer" EntitySet="Answer" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Answer__StuID__1ED998B2" Association="Self.FK__Answer__StuID__1ED998B2">
+      <End Role="Student" EntitySet="Student" />
+      <End Role="Answer" EntitySet="Answer" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Answer__TeacherI__1FCDBCEB" Association="Self.FK__Answer__TeacherI__1FCDBCEB">
+      <End Role="Teacher" EntitySet="Teacher" />
+      <End Role="Answer" EntitySet="Answer" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Detail__AnswerID__20C1E124" Association="Self.FK__Detail__AnswerID__20C1E124">
+      <End Role="Answer" EntitySet="Answer" />
+      <End Role="Detail" EntitySet="Detail" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Detail__TopicID__21B6055D" Association="Self.FK__Detail__TopicID__21B6055D">
+      <End Role="Topic" EntitySet="Topic" />
+      <End Role="Detail" EntitySet="Detail" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Topic__PaperID__22AA2996" Association="Self.FK__Topic__PaperID__22AA2996">
+      <End Role="Paper" EntitySet="Paper" />
+      <End Role="Topic" EntitySet="Topic" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

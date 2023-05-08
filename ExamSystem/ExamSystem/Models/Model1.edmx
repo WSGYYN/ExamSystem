@@ -1,0 +1,484 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ExamDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Answer">
+          <Key>
+            <PropertyRef Name="AnswerID" />
+          </Key>
+          <Property Name="AnswerID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PaperID" Type="int" Nullable="false" />
+          <Property Name="StuID" Type="int" Nullable="false" />
+          <Property Name="TeacherID" Type="int" />
+          <Property Name="AnswerScore" Type="int" />
+          <Property Name="AnswerTime" Type="datetime" />
+          <Property Name="SubmitTime" Type="datetime" />
+          <Property Name="BatchTime" Type="datetime" />
+          <Property Name="AnswerState" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Detail">
+          <Key>
+            <PropertyRef Name="DetailID" />
+          </Key>
+          <Property Name="DetailID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AnswerID" Type="int" Nullable="false" />
+          <Property Name="TopicID" Type="int" Nullable="false" />
+          <Property Name="DetailAnswer" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="Paper">
+          <Key>
+            <PropertyRef Name="PaperID" />
+          </Key>
+          <Property Name="PaperID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PaperName" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="PaperExplain" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="PaperTime" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Student">
+          <Key>
+            <PropertyRef Name="StuID" />
+          </Key>
+          <Property Name="StuID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StuName" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="StuLoginName" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="StuLoginPwd" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="StuSex" Type="bit" Nullable="false" />
+          <Property Name="StuPhone" Type="nvarchar" MaxLength="20" />
+          <Property Name="StuEmail" Type="nvarchar" MaxLength="50" />
+          <Property Name="StuGrade" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Teacher">
+          <Key>
+            <PropertyRef Name="TeacherID" />
+          </Key>
+          <Property Name="TeacherID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TeacherName" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="TeacherLoginName" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="TeacherLoginPwd" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="TeacherPhone" Type="nvarchar" MaxLength="20" />
+          <Property Name="TeacherEmail" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Topic">
+          <Key>
+            <PropertyRef Name="TopicID" />
+          </Key>
+          <Property Name="TopicID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TopicExplain" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="TopicScore" Type="int" Nullable="false" />
+          <Property Name="TopicType" Type="int" Nullable="false" />
+          <Property Name="TopicA" Type="nvarchar" MaxLength="100" />
+          <Property Name="TopicB" Type="nvarchar" MaxLength="100" />
+          <Property Name="TopicC" Type="nvarchar" MaxLength="100" />
+          <Property Name="TopicD" Type="nvarchar" MaxLength="100" />
+          <Property Name="TopicSort" Type="int" Nullable="false" />
+          <Property Name="TopicAnswer" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="PaperID" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Answer__PaperID__1DE57479">
+          <End Role="Paper" Type="Self.Paper" Multiplicity="1" />
+          <End Role="Answer" Type="Self.Answer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Paper">
+              <PropertyRef Name="PaperID" />
+            </Principal>
+            <Dependent Role="Answer">
+              <PropertyRef Name="PaperID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Answer__StuID__1ED998B2">
+          <End Role="Student" Type="Self.Student" Multiplicity="1" />
+          <End Role="Answer" Type="Self.Answer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="StuID" />
+            </Principal>
+            <Dependent Role="Answer">
+              <PropertyRef Name="StuID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Answer__TeacherI__1FCDBCEB">
+          <End Role="Teacher" Type="Self.Teacher" Multiplicity="0..1" />
+          <End Role="Answer" Type="Self.Answer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Teacher">
+              <PropertyRef Name="TeacherID" />
+            </Principal>
+            <Dependent Role="Answer">
+              <PropertyRef Name="TeacherID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Detail__AnswerID__20C1E124">
+          <End Role="Answer" Type="Self.Answer" Multiplicity="1" />
+          <End Role="Detail" Type="Self.Detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Answer">
+              <PropertyRef Name="AnswerID" />
+            </Principal>
+            <Dependent Role="Detail">
+              <PropertyRef Name="AnswerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Detail__TopicID__21B6055D">
+          <End Role="Topic" Type="Self.Topic" Multiplicity="1" />
+          <End Role="Detail" Type="Self.Detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Topic">
+              <PropertyRef Name="TopicID" />
+            </Principal>
+            <Dependent Role="Detail">
+              <PropertyRef Name="TopicID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Topic__PaperID__22AA2996">
+          <End Role="Paper" Type="Self.Paper" Multiplicity="1" />
+          <End Role="Topic" Type="Self.Topic" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Paper">
+              <PropertyRef Name="PaperID" />
+            </Principal>
+            <Dependent Role="Topic">
+              <PropertyRef Name="PaperID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ExamDBModelStoreContainer">
+          <EntitySet Name="Answer" EntityType="Self.Answer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Detail" EntityType="Self.Detail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Paper" EntityType="Self.Paper" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Student" EntityType="Self.Student" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Teacher" EntityType="Self.Teacher" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Topic" EntityType="Self.Topic" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Answer__PaperID__1DE57479" Association="Self.FK__Answer__PaperID__1DE57479">
+            <End Role="Paper" EntitySet="Paper" />
+            <End Role="Answer" EntitySet="Answer" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Answer__StuID__1ED998B2" Association="Self.FK__Answer__StuID__1ED998B2">
+            <End Role="Student" EntitySet="Student" />
+            <End Role="Answer" EntitySet="Answer" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Answer__TeacherI__1FCDBCEB" Association="Self.FK__Answer__TeacherI__1FCDBCEB">
+            <End Role="Teacher" EntitySet="Teacher" />
+            <End Role="Answer" EntitySet="Answer" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Detail__AnswerID__20C1E124" Association="Self.FK__Detail__AnswerID__20C1E124">
+            <End Role="Answer" EntitySet="Answer" />
+            <End Role="Detail" EntitySet="Detail" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Detail__TopicID__21B6055D" Association="Self.FK__Detail__TopicID__21B6055D">
+            <End Role="Topic" EntitySet="Topic" />
+            <End Role="Detail" EntitySet="Detail" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Topic__PaperID__22AA2996" Association="Self.FK__Topic__PaperID__22AA2996">
+            <End Role="Paper" EntitySet="Paper" />
+            <End Role="Topic" EntitySet="Topic" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ExamDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Answer">
+          <Key>
+            <PropertyRef Name="AnswerID" />
+          </Key>
+          <Property Name="AnswerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PaperID" Type="Int32" Nullable="false" />
+          <Property Name="StuID" Type="Int32" Nullable="false" />
+          <Property Name="TeacherID" Type="Int32" />
+          <Property Name="AnswerScore" Type="Int32" />
+          <Property Name="AnswerTime" Type="DateTime" Precision="3" />
+          <Property Name="SubmitTime" Type="DateTime" Precision="3" />
+          <Property Name="BatchTime" Type="DateTime" Precision="3" />
+          <Property Name="AnswerState" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Paper" Relationship="Self.FK__Answer__PaperID__1DE57479" FromRole="Answer" ToRole="Paper" />
+          <NavigationProperty Name="Student" Relationship="Self.FK__Answer__StuID__1ED998B2" FromRole="Answer" ToRole="Student" />
+          <NavigationProperty Name="Teacher" Relationship="Self.FK__Answer__TeacherI__1FCDBCEB" FromRole="Answer" ToRole="Teacher" />
+          <NavigationProperty Name="Detail" Relationship="Self.FK__Detail__AnswerID__20C1E124" FromRole="Answer" ToRole="Detail" />
+        </EntityType>
+        <EntityType Name="Detail">
+          <Key>
+            <PropertyRef Name="DetailID" />
+          </Key>
+          <Property Name="DetailID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AnswerID" Type="Int32" Nullable="false" />
+          <Property Name="TopicID" Type="Int32" Nullable="false" />
+          <Property Name="DetailAnswer" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Answer" Relationship="Self.FK__Detail__AnswerID__20C1E124" FromRole="Detail" ToRole="Answer" />
+          <NavigationProperty Name="Topic" Relationship="Self.FK__Detail__TopicID__21B6055D" FromRole="Detail" ToRole="Topic" />
+        </EntityType>
+        <EntityType Name="Paper">
+          <Key>
+            <PropertyRef Name="PaperID" />
+          </Key>
+          <Property Name="PaperID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PaperName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PaperExplain" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PaperTime" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Answer" Relationship="Self.FK__Answer__PaperID__1DE57479" FromRole="Paper" ToRole="Answer" />
+          <NavigationProperty Name="Topic" Relationship="Self.FK__Topic__PaperID__22AA2996" FromRole="Paper" ToRole="Topic" />
+        </EntityType>
+        <EntityType Name="Student">
+          <Key>
+            <PropertyRef Name="StuID" />
+          </Key>
+          <Property Name="StuID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StuName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="StuLoginName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="StuLoginPwd" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="StuSex" Type="Boolean" Nullable="false" />
+          <Property Name="StuPhone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="StuEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="StuGrade" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Answer" Relationship="Self.FK__Answer__StuID__1ED998B2" FromRole="Student" ToRole="Answer" />
+        </EntityType>
+        <EntityType Name="Teacher">
+          <Key>
+            <PropertyRef Name="TeacherID" />
+          </Key>
+          <Property Name="TeacherID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TeacherName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TeacherLoginName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TeacherLoginPwd" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TeacherPhone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="TeacherEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Answer" Relationship="Self.FK__Answer__TeacherI__1FCDBCEB" FromRole="Teacher" ToRole="Answer" />
+        </EntityType>
+        <EntityType Name="Topic">
+          <Key>
+            <PropertyRef Name="TopicID" />
+          </Key>
+          <Property Name="TopicID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TopicExplain" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TopicScore" Type="Int32" Nullable="false" />
+          <Property Name="TopicType" Type="Int32" Nullable="false" />
+          <Property Name="TopicA" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="TopicB" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="TopicC" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="TopicD" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="TopicSort" Type="Int32" Nullable="false" />
+          <Property Name="TopicAnswer" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PaperID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Detail" Relationship="Self.FK__Detail__TopicID__21B6055D" FromRole="Topic" ToRole="Detail" />
+          <NavigationProperty Name="Paper" Relationship="Self.FK__Topic__PaperID__22AA2996" FromRole="Topic" ToRole="Paper" />
+        </EntityType>
+        <Association Name="FK__Answer__PaperID__1DE57479">
+          <End Role="Paper" Type="Self.Paper" Multiplicity="1" />
+          <End Role="Answer" Type="Self.Answer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Paper">
+              <PropertyRef Name="PaperID" />
+            </Principal>
+            <Dependent Role="Answer">
+              <PropertyRef Name="PaperID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Answer__StuID__1ED998B2">
+          <End Role="Student" Type="Self.Student" Multiplicity="1" />
+          <End Role="Answer" Type="Self.Answer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="StuID" />
+            </Principal>
+            <Dependent Role="Answer">
+              <PropertyRef Name="StuID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Answer__TeacherI__1FCDBCEB">
+          <End Role="Teacher" Type="Self.Teacher" Multiplicity="0..1" />
+          <End Role="Answer" Type="Self.Answer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Teacher">
+              <PropertyRef Name="TeacherID" />
+            </Principal>
+            <Dependent Role="Answer">
+              <PropertyRef Name="TeacherID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Detail__AnswerID__20C1E124">
+          <End Role="Answer" Type="Self.Answer" Multiplicity="1" />
+          <End Role="Detail" Type="Self.Detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Answer">
+              <PropertyRef Name="AnswerID" />
+            </Principal>
+            <Dependent Role="Detail">
+              <PropertyRef Name="AnswerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Detail__TopicID__21B6055D">
+          <End Role="Topic" Type="Self.Topic" Multiplicity="1" />
+          <End Role="Detail" Type="Self.Detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Topic">
+              <PropertyRef Name="TopicID" />
+            </Principal>
+            <Dependent Role="Detail">
+              <PropertyRef Name="TopicID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Topic__PaperID__22AA2996">
+          <End Role="Paper" Type="Self.Paper" Multiplicity="1" />
+          <End Role="Topic" Type="Self.Topic" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Paper">
+              <PropertyRef Name="PaperID" />
+            </Principal>
+            <Dependent Role="Topic">
+              <PropertyRef Name="PaperID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ExamDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Answer" EntityType="Self.Answer" />
+          <EntitySet Name="Detail" EntityType="Self.Detail" />
+          <EntitySet Name="Paper" EntityType="Self.Paper" />
+          <EntitySet Name="Student" EntityType="Self.Student" />
+          <EntitySet Name="Teacher" EntityType="Self.Teacher" />
+          <EntitySet Name="Topic" EntityType="Self.Topic" />
+          <AssociationSet Name="FK__Answer__PaperID__1DE57479" Association="Self.FK__Answer__PaperID__1DE57479">
+            <End Role="Paper" EntitySet="Paper" />
+            <End Role="Answer" EntitySet="Answer" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Answer__StuID__1ED998B2" Association="Self.FK__Answer__StuID__1ED998B2">
+            <End Role="Student" EntitySet="Student" />
+            <End Role="Answer" EntitySet="Answer" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Answer__TeacherI__1FCDBCEB" Association="Self.FK__Answer__TeacherI__1FCDBCEB">
+            <End Role="Teacher" EntitySet="Teacher" />
+            <End Role="Answer" EntitySet="Answer" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Detail__AnswerID__20C1E124" Association="Self.FK__Detail__AnswerID__20C1E124">
+            <End Role="Answer" EntitySet="Answer" />
+            <End Role="Detail" EntitySet="Detail" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Detail__TopicID__21B6055D" Association="Self.FK__Detail__TopicID__21B6055D">
+            <End Role="Topic" EntitySet="Topic" />
+            <End Role="Detail" EntitySet="Detail" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Topic__PaperID__22AA2996" Association="Self.FK__Topic__PaperID__22AA2996">
+            <End Role="Paper" EntitySet="Paper" />
+            <End Role="Topic" EntitySet="Topic" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ExamDBModelStoreContainer" CdmEntityContainer="ExamDBEntities">
+          <EntitySetMapping Name="Answer">
+            <EntityTypeMapping TypeName="ExamDBModel.Answer">
+              <MappingFragment StoreEntitySet="Answer">
+                <ScalarProperty Name="AnswerID" ColumnName="AnswerID" />
+                <ScalarProperty Name="PaperID" ColumnName="PaperID" />
+                <ScalarProperty Name="StuID" ColumnName="StuID" />
+                <ScalarProperty Name="TeacherID" ColumnName="TeacherID" />
+                <ScalarProperty Name="AnswerScore" ColumnName="AnswerScore" />
+                <ScalarProperty Name="AnswerTime" ColumnName="AnswerTime" />
+                <ScalarProperty Name="SubmitTime" ColumnName="SubmitTime" />
+                <ScalarProperty Name="BatchTime" ColumnName="BatchTime" />
+                <ScalarProperty Name="AnswerState" ColumnName="AnswerState" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Detail">
+            <EntityTypeMapping TypeName="ExamDBModel.Detail">
+              <MappingFragment StoreEntitySet="Detail">
+                <ScalarProperty Name="DetailID" ColumnName="DetailID" />
+                <ScalarProperty Name="AnswerID" ColumnName="AnswerID" />
+                <ScalarProperty Name="TopicID" ColumnName="TopicID" />
+                <ScalarProperty Name="DetailAnswer" ColumnName="DetailAnswer" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Paper">
+            <EntityTypeMapping TypeName="ExamDBModel.Paper">
+              <MappingFragment StoreEntitySet="Paper">
+                <ScalarProperty Name="PaperID" ColumnName="PaperID" />
+                <ScalarProperty Name="PaperName" ColumnName="PaperName" />
+                <ScalarProperty Name="PaperExplain" ColumnName="PaperExplain" />
+                <ScalarProperty Name="PaperTime" ColumnName="PaperTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Student">
+            <EntityTypeMapping TypeName="ExamDBModel.Student">
+              <MappingFragment StoreEntitySet="Student">
+                <ScalarProperty Name="StuID" ColumnName="StuID" />
+                <ScalarProperty Name="StuName" ColumnName="StuName" />
+                <ScalarProperty Name="StuLoginName" ColumnName="StuLoginName" />
+                <ScalarProperty Name="StuLoginPwd" ColumnName="StuLoginPwd" />
+                <ScalarProperty Name="StuSex" ColumnName="StuSex" />
+                <ScalarProperty Name="StuPhone" ColumnName="StuPhone" />
+                <ScalarProperty Name="StuEmail" ColumnName="StuEmail" />
+                <ScalarProperty Name="StuGrade" ColumnName="StuGrade" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Teacher">
+            <EntityTypeMapping TypeName="ExamDBModel.Teacher">
+              <MappingFragment StoreEntitySet="Teacher">
+                <ScalarProperty Name="TeacherID" ColumnName="TeacherID" />
+                <ScalarProperty Name="TeacherName" ColumnName="TeacherName" />
+                <ScalarProperty Name="TeacherLoginName" ColumnName="TeacherLoginName" />
+                <ScalarProperty Name="TeacherLoginPwd" ColumnName="TeacherLoginPwd" />
+                <ScalarProperty Name="TeacherPhone" ColumnName="TeacherPhone" />
+                <ScalarProperty Name="TeacherEmail" ColumnName="TeacherEmail" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Topic">
+            <EntityTypeMapping TypeName="ExamDBModel.Topic">
+              <MappingFragment StoreEntitySet="Topic">
+                <ScalarProperty Name="TopicID" ColumnName="TopicID" />
+                <ScalarProperty Name="TopicExplain" ColumnName="TopicExplain" />
+                <ScalarProperty Name="TopicScore" ColumnName="TopicScore" />
+                <ScalarProperty Name="TopicType" ColumnName="TopicType" />
+                <ScalarProperty Name="TopicA" ColumnName="TopicA" />
+                <ScalarProperty Name="TopicB" ColumnName="TopicB" />
+                <ScalarProperty Name="TopicC" ColumnName="TopicC" />
+                <ScalarProperty Name="TopicD" ColumnName="TopicD" />
+                <ScalarProperty Name="TopicSort" ColumnName="TopicSort" />
+                <ScalarProperty Name="TopicAnswer" ColumnName="TopicAnswer" />
+                <ScalarProperty Name="PaperID" ColumnName="PaperID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="无" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

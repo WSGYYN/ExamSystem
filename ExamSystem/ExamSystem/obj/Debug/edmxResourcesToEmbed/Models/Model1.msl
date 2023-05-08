@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ExamDBModelStoreContainer" CdmEntityContainer="ExamDBEntities">
+    <EntitySetMapping Name="Answer">
+      <EntityTypeMapping TypeName="ExamDBModel.Answer">
+        <MappingFragment StoreEntitySet="Answer">
+          <ScalarProperty Name="AnswerID" ColumnName="AnswerID" />
+          <ScalarProperty Name="PaperID" ColumnName="PaperID" />
+          <ScalarProperty Name="StuID" ColumnName="StuID" />
+          <ScalarProperty Name="TeacherID" ColumnName="TeacherID" />
+          <ScalarProperty Name="AnswerScore" ColumnName="AnswerScore" />
+          <ScalarProperty Name="AnswerTime" ColumnName="AnswerTime" />
+          <ScalarProperty Name="SubmitTime" ColumnName="SubmitTime" />
+          <ScalarProperty Name="BatchTime" ColumnName="BatchTime" />
+          <ScalarProperty Name="AnswerState" ColumnName="AnswerState" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Detail">
+      <EntityTypeMapping TypeName="ExamDBModel.Detail">
+        <MappingFragment StoreEntitySet="Detail">
+          <ScalarProperty Name="DetailID" ColumnName="DetailID" />
+          <ScalarProperty Name="AnswerID" ColumnName="AnswerID" />
+          <ScalarProperty Name="TopicID" ColumnName="TopicID" />
+          <ScalarProperty Name="DetailAnswer" ColumnName="DetailAnswer" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Paper">
+      <EntityTypeMapping TypeName="ExamDBModel.Paper">
+        <MappingFragment StoreEntitySet="Paper">
+          <ScalarProperty Name="PaperID" ColumnName="PaperID" />
+          <ScalarProperty Name="PaperName" ColumnName="PaperName" />
+          <ScalarProperty Name="PaperExplain" ColumnName="PaperExplain" />
+          <ScalarProperty Name="PaperTime" ColumnName="PaperTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Student">
+      <EntityTypeMapping TypeName="ExamDBModel.Student">
+        <MappingFragment StoreEntitySet="Student">
+          <ScalarProperty Name="StuID" ColumnName="StuID" />
+          <ScalarProperty Name="StuName" ColumnName="StuName" />
+          <ScalarProperty Name="StuLoginName" ColumnName="StuLoginName" />
+          <ScalarProperty Name="StuLoginPwd" ColumnName="StuLoginPwd" />
+          <ScalarProperty Name="StuSex" ColumnName="StuSex" />
+          <ScalarProperty Name="StuPhone" ColumnName="StuPhone" />
+          <ScalarProperty Name="StuEmail" ColumnName="StuEmail" />
+          <ScalarProperty Name="StuGrade" ColumnName="StuGrade" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Teacher">
+      <EntityTypeMapping TypeName="ExamDBModel.Teacher">
+        <MappingFragment StoreEntitySet="Teacher">
+          <ScalarProperty Name="TeacherID" ColumnName="TeacherID" />
+          <ScalarProperty Name="TeacherName" ColumnName="TeacherName" />
+          <ScalarProperty Name="TeacherLoginName" ColumnName="TeacherLoginName" />
+          <ScalarProperty Name="TeacherLoginPwd" ColumnName="TeacherLoginPwd" />
+          <ScalarProperty Name="TeacherPhone" ColumnName="TeacherPhone" />
+          <ScalarProperty Name="TeacherEmail" ColumnName="TeacherEmail" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Topic">
+      <EntityTypeMapping TypeName="ExamDBModel.Topic">
+        <MappingFragment StoreEntitySet="Topic">
+          <ScalarProperty Name="TopicID" ColumnName="TopicID" />
+          <ScalarProperty Name="TopicExplain" ColumnName="TopicExplain" />
+          <ScalarProperty Name="TopicScore" ColumnName="TopicScore" />
+          <ScalarProperty Name="TopicType" ColumnName="TopicType" />
+          <ScalarProperty Name="TopicA" ColumnName="TopicA" />
+          <ScalarProperty Name="TopicB" ColumnName="TopicB" />
+          <ScalarProperty Name="TopicC" ColumnName="TopicC" />
+          <ScalarProperty Name="TopicD" ColumnName="TopicD" />
+          <ScalarProperty Name="TopicSort" ColumnName="TopicSort" />
+          <ScalarProperty Name="TopicAnswer" ColumnName="TopicAnswer" />
+          <ScalarProperty Name="PaperID" ColumnName="PaperID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
