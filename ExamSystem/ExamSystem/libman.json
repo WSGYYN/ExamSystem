@@ -1,0 +1,25 @@
+{
+  "version": "1.0",
+  "defaultProvider": "unpkg",
+  "libraries": [
+    {
+      "library": "axios@1.4.0",
+      "destination": "Content/axios/",
+      "files": [
+        "dist/axios.js",
+        "dist/axios.min.js"
+      ]
+    },
+    {
+      "library": "element-ui@2.15.13",
+      "destination": "Content/element-ui/"
+    },
+    {
+      "library": "vue@2",
+      "destination": "Content/vue/",
+      "files": [
+        "dist/vue.js"
+      ]
+    }
+  ]
+}

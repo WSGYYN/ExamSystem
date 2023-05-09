@@ -1,0 +1,28 @@
+﻿
+@{
+    ViewBag.Title = "Realme";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var stu = Model as ExamSystem.Models.Student;
+}
+
+<div class="container">
+    <aside class="profile-nav">
+        <section class="panel">
+            <div class="user-heading round">
+                <a href="#">
+                    <img src="~/Content/img/profile-avatar.jpg" alt="">
+                </a>
+                <h1>@stu.StuName</h1>
+                <p>@stu.StuEmail</p>
+            </div>
+            <ul class="nav nav-pills nav-stacked">
+                <li><a> <i class="fa fa-user"></i><i>账号</i> @stu.StuLoginName</a></li>
+                <li><a> <i class="fa fa-venus-mars"></i><i>性别</i> @if (stu.StuSex == true){<b>男</b> }else{<b>女</b>}</a></li>
+                <li><a> <i class="fa fa-phone"></i><i>电话</i> @stu.StuPhone</a></li>
+                <li><a> <i class="fa fa-graduation-cap"></i><i>班级</i> @stu.StuGrade</a></li>
+            </ul>
+        </section>
+        <a class="btn btn-danger fa-pull-left" href="/Login/EditReadme/@stu.StuID">修改我的信息</a>
+    </aside>
+</div>
+

@@ -20,6 +20,13 @@ namespace ExamSystem.Controllers
         {
             return View();
         }
+        //退出登录
+        public ActionResult Layout()
+        {
+            Session.Clear();
+            return RedirectToAction("Index");
+        }
 
-    }
+
+	}
 }

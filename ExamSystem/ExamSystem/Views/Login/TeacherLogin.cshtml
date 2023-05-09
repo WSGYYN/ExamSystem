@@ -6,11 +6,11 @@
 
 <body class="login-body">
     <div class="container">
-        <form class="form-signin" action="index.html">
+        <form class="form-signin" action="/Login/TeacherLogin" method="post">
             <h2 class="form-signin-heading">在线考试系统</h2>
             <div class="login-wrap">
-                <input type="text" class="form-control" placeholder="User ID" autofocus>
-                <input type="password" class="form-control" placeholder="Password">
+                <input type="text" name="TeacherLoginName" class="form-control" placeholder="User ID" autofocus>
+                <input type="password" name="TeacherLoginPwd" class="form-control" placeholder="Password">
 
                 <button class="btn btn-lg btn-login btn-block" type="submit">Sign in</button>
                 <p>教师登录</p>
