@@ -3,56 +3,61 @@
     ViewBag.Title = "StuRegister";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<link  rel="stylesheet" href="~/Content/element-ui/lib/theme-chalk/index.css"/>
-
-
-
+<link rel="stylesheet" href="~/Content/element-ui/lib/theme-chalk/index.css" />
 <div id="app">
-    <el-form ref="form" :model="form" :rules="rules" label-width="80px"
-             style="max-width: 500px; margin: 20px auto;">
-        <el-form-item label="用户名" prop="StuLoginName">
-            <el-input v-model="form.StuLoginName"></el-input>
-        </el-form-item>
-        <el-form-item label="昵称" prop="StuName">
-            <el-input v-model="form.StuName"></el-input>
-        </el-form-item>
-        <el-form-item label="密码" prop="StuLoginPwd">
-            <el-input type="password" v-model="form.StuLoginPwd"></el-input>
-        </el-form-item>
-        <el-form-item label="确认密码" prop="confirmPassword">
-            <el-input type="password" v-model="form.confirmPassword"></el-input>
-        </el-form-item>
-        <el-form-item label="性别" prop="StuSex">
-            <el-select v-model="form.StuSex">
-                <el-option label="男" value="0"></el-option>
-                <el-option label="女" value="1"></el-option>
-            </el-select>
-        </el-form-item>
-        <el-form-item label="班级" prop="StuGrade">
-            <el-input v-model="form.StuGrade"></el-input>
-        </el-form-item>
-        <el-form-item label="邮箱" prop="StuEmail">
-            <el-input v-model="form.StuEmail"></el-input>
-        </el-form-item>
-        <el-form-item label="手机号" prop="StuPhone">
-            <el-input v-model="form.StuPhone"></el-input>
-        </el-form-item>
-        <el-form-item>
-            <el-button type="primary" @@click="submitForm">注册</el-button>
-        </el-form-item>
-    </el-form>
+    <div class="container">
+        <aside class="profile-nav col-lg">
+            <ul class="nav nav-pills nav-stacked">
+                <section class="panel">
+                    <div class="user-heading round">
+                        <h1>欢迎您，请开始注册！</h1>
+                    </div>
+                    <div class="margin-1">
+                        <el-form ref="form" class="margin-1" :model="form" :rules="rules" label-width="80px"
+                                 style="max-width: 500px; margin: 20px auto;">
+                            <el-form-item label="用户名" prop="StuLoginName">
+                                <el-input v-model="form.StuLoginName"></el-input>
+                            </el-form-item>
+
+                            <el-form-item label="昵称" prop="StuName">
+                                <el-input v-model="form.StuName"></el-input>
+                            </el-form-item>
+                            <el-form-item label="密码" prop="StuLoginPwd">
+                                <el-input type="password" v-model="form.StuLoginPwd"></el-input>
+                            </el-form-item>
+                            <el-form-item label="确认密码" prop="confirmPassword">
+                                <el-input type="password" v-model="form.confirmPassword"></el-input>
+                            </el-form-item>
+                            <el-form-item label="性别" prop="StuSex">
+                                <el-select v-model="form.StuSex">
+                                    <el-option label="男" value="0"></el-option>
+                                    <el-option label="女" value="1"></el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item label="班级" prop="StuGrade">
+                                <el-input v-model="form.StuGrade"></el-input>
+                            </el-form-item>
+                            <el-form-item label="邮箱" prop="StuEmail">
+                                <el-input v-model="form.StuEmail"></el-input>
+                            </el-form-item>
+                            <el-form-item label="手机号" prop="StuPhone">
+                                <el-input v-model="form.StuPhone"></el-input>
+                            </el-form-item>
+                            <el-form-item>
+                                <el-button type="primary" @@click="submitForm">注册</el-button>
+                            </el-form-item>
+                        </el-form>
+                    </div>
+                </section>
+                    
+            </ul>
+        </aside>
+    </div>
 </div>
-
-
-
 <!-- import Vue before Element -->
 <script src="~/Content/vue/dist/vue.js"></script>
 <!-- import JavaScript -->
 <script src="~/Content/element-ui/lib/index.js"></script>
-
-
-
 <script>
     new Vue({
         el: '#app',
@@ -113,6 +118,7 @@
             submitForm() {
                 this.$refs.form.validate((valid) => {
                     if (valid) {
+                        console.log(valid)
                         console.log(this.form)
                         // 表单验证通过，可以进行注册逻辑
                         axios.post('/Login/StuRegister', this.form)
@@ -135,3 +141,9 @@
         }
     });
 </script>
+<style>
+    .margin-1{
+        padding-top:20px;
+        padding-bottom:20px;
+    }
+</style>

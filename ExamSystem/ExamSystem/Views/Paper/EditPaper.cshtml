@@ -1,0 +1,26 @@
+﻿
+@{
+    ViewBag.Title = "EditPaper";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var paperEdit = Model as ExamSystem.Models.Paper;
+}
+
+<div class="container">
+    <aside class="profile-nav col-lg">
+        <form action="/Paper/EditPaper" method="post">
+            <section class="panel">
+                <div class="user-heading round">
+                    <h1>修改试卷</h1>
+                </div>
+                <ul class="nav nav-pills nav-stacked">
+                    <li hidden><input hidden type="text" name="PaperID" value="@paperEdit.PaperID" /></li>
+                    <li><a> <i class="fa fa-file-text-o"></i><i>试卷名称</i> <input type="text" name="PaperName" class="form-control" value="@paperEdit.PaperName"></a></li>
+                    <li><a> <i class="fa fa-info-circle"></i><i>试卷说明</i> <input type="text" name="PaperExplain" class="form-control" value="@paperEdit.PaperExplain"></a></li>
+                    <li><a> <i class="fa fa-clock-o"></i><i>答卷时长</i> <input type="text" name="PaperTime" class="form-control" value="@paperEdit.PaperTime"></a></li>
+                </ul>
+            </section>
+            <input type="submit" class="btn btn-danger fa-pull-left" value="提交">
+        </form>
+    </aside>
+</div>
+

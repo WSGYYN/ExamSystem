@@ -1,0 +1,95 @@
+﻿@{
+    ViewBag.Title = "AddPaper";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" href="~/Content/element-ui/lib/theme-chalk/index.css" />
+<div id="app">
+    <div class="container">
+        <aside class="profile-nav col-lg">
+            <ul class="nav nav-pills nav-stacked">
+                <section class="panel">
+                    <div class="user-heading round">
+                        <h1>添加试卷</h1>
+                    </div>
+                    <div class="margin-1">
+                        <el-form ref="form" class="margin-1" :model="form" :rules="rules" label-width="80px" style="max-width: 500px; margin: 20px auto;">
+                            <el-form-item label="试卷名称"  prop="PaperName">
+                                <el-input v-model="form.PaperName" ></el-input>
+                            </el-form-item>
+                            <el-form-item label="试卷说明" prop="PaperExplain">
+                                <el-input v-model="form.PaperExplain"></el-input>
+                            </el-form-item>
+                            <el-form-item label="试卷时长" prop="PaperTime">
+                                <el-input v-model="form.PaperTime"></el-input>
+                            </el-form-item>
+                            <el-form-item>
+                                <el-button type="primary" @@click="submitForm">添加</el-button>
+                            </el-form-item>
+                        </el-form>
+                    </div>
+                </section>
+
+            </ul>
+        </aside>
+    </div>
+</div>
+<!-- import Vue before Element -->
+<script src="~/Content/vue/dist/vue.js"></script>
+<!-- import JavaScript -->
+<script src="~/Content/element-ui/lib/index.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data() {
+            return {
+                form: {
+                    PaperName: '',
+                    PaperExplain: '',
+                    PaperTime:''
+                },
+                rules: {
+                    PaperName: [
+                        { required: true, message: '请输入试卷名称', trigger: 'blur' }
+                    ],
+                    PaperExplain: [
+                        { required: true, message: '请输入试卷说明', trigger: 'blur' }
+                    ],
+                    PaperTime: [
+                        { required: true, message: '请输入答卷时长', trigger: 'blur' }
+                    ],
+                }
+            }
+        },
+        methods: {
+            submitForm() {
+                this.$refs.form.validate((valid) => {
+                    if (valid) {
+                        console.log(valid)
+                        console.log(this.form)
+                        // 表单验证通过，可以进行注册逻辑
+                        axios.post('/Paper/AddPaper', this.form)
+                            .then(response => {
+                                // 处理API返回的响应数据
+                                alert('试卷添加成功！');
+                                window.location.replace('/Paper/PaperIndex')
+                            })
+                            .catch(error => {
+                                // 处理错误
+                                console.error('添加失败:', error);
+                                this.$message.error('添加失败失败，请稍后重试！');
+                            });
+                    } else {
+                        // 表单验证不通过，提示错误信息
+                        this.$message.error('请检查表单填写！');
+                    }
+                });
+            }
+        }
+    });
+</script>
+<style>
+    .margin-1 {
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+</style>

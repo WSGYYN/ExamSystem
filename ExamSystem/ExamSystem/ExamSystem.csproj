@@ -164,6 +164,9 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\PaperController.cs" />
+    <Compile Include="Controllers\StuManageController.cs" />
+    <Compile Include="Controllers\TopicController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -1357,6 +1360,11 @@
     <Content Include="Views\Login\StuRegister.cshtml" />
     <Content Include="Views\Login\Realme.cshtml" />
     <Content Include="Views\Login\EditReadme.cshtml" />
+    <Content Include="Views\StuManage\StuTable.cshtml" />
+    <Content Include="Views\Paper\PaperIndex.cshtml" />
+    <Content Include="Views\Paper\AddPaper.cshtml" />
+    <Content Include="Views\Paper\EditPaper.cshtml" />
+    <Content Include="Views\Topic\TopicIndex.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

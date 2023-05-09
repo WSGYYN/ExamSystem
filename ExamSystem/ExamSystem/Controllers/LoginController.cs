@@ -9,7 +9,6 @@ using Microsoft.Ajax.Utilities;
 
 namespace ExamSystem.Controllers
 {
-
 	//学生和教师登录
 	public class LoginController : Controller
 	{
@@ -53,7 +52,6 @@ namespace ExamSystem.Controllers
 				return Content("<script>alert('账号或密码错误，请重新输入！');history.go(-1);</script>");
 			}
 		}
-
 		//学生注册
 		public ActionResult StuRegister()
 		{
@@ -76,7 +74,6 @@ namespace ExamSystem.Controllers
 				}
 			}
 		}
-
 		//展示个人信息
 		public ActionResult Realme(int? id)
 		{
@@ -85,10 +82,7 @@ namespace ExamSystem.Controllers
 				var liststu = db.Student.Find(id);
 				return View(liststu);
 			}
-
 		}
-
-
 		//修改个人信息界面
 		public ActionResult EditReadme(int? id)
 		{
@@ -97,7 +91,6 @@ namespace ExamSystem.Controllers
 				var liststu = db.Student.Find(id);
 				return View(liststu);
 			}
-
 		}
 		//提交修改
 		[HttpPost]
@@ -105,18 +98,31 @@ namespace ExamSystem.Controllers
 		{
 			using (ExamDBEntities db = new ExamDBEntities())
 			{
+				//模型验证通过，保存
 				if (ModelState.IsValid)
 				{
-
 					db.Entry(student).State = EntityState.Modified;
 					db.SaveChanges();
-
+				}
+				//模型验证不通过，找错误
+				if (!ModelState.IsValid)
+				{
+					foreach (var key in ModelState.Keys)
+					{
+						var errors = ModelState[key].Errors;
+						foreach (var error in errors)
+						{
+							var errorMessage = error.ErrorMessage;
+						}
+					}
 				}
 			}
-			//return RedirectToAction("MyAction", "MyController", new { id = id });
-			//return RedirectToAction("Realme", new { id = student.StuID });
-			return View("Home","Index");
+			//修改完成后，回到我的信息页面，传递一个参数
+			return RedirectToAction("Realme", new { id = student.StuID });
 		}
+
+
+
 
 
 

@@ -1,0 +1,78 @@
+﻿@{
+    ViewBag.Title = "StuTable";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row">
+    <div class="col-lg-12">
+        <section class="panel">
+            <header class="panel-heading">
+                学生信息表
+            </header>
+            <table class="table table-striped border-top" id="sample_1">
+                <thead>
+                    <tr>
+                        <th class="hidden-phone">学生昵称</th>
+                        <th>学生姓名</th>
+                        <th class="hidden-phone">学生性别</th>
+                        <th class="hidden-phone">学生班级</th>
+                        <th class="hidden-phone">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model as IList<ExamSystem.Models.Student>)
+                    {
+                        <tr class="odd gradeX">
+
+                            <td class="center hidden-phone">@item.StuName</td>
+                            <td class="center hidden-phone">@item.StuLoginName</td>
+                            <td class="center hidden-phone">
+                                @if (item.StuSex == true)
+                                {
+                                    <i>男</i>
+                                }
+                                else
+                                {
+                                    <b>女</b>
+                                }
+                            </td>
+                            <td class="center">@item.StuGrade</td>
+                            <td>
+                                <button class="btn btn-success btn-xs" data-toggle="tooltip" data-placement="top" title="详情" onclick="redirectToDetails('@item.StuID')">
+                                    <i class="fa fa-info-circle"></i>
+                                </button>
+                                <button class="btn btn-danger btn-xs" data-toggle="tooltip" data-placement="top" title="删除"  onclick="redirectToDelete('@item.StuID', '@item.StuName')">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </section>
+    </div>
+</div>
+<script>
+    function redirectToDetails(StuID) {
+        window.location.href = '/Login/Realme?id=' + encodeURIComponent(StuID);
+    }
+    function redirectToDelete(studentId,studentname) {
+        var confirmation = confirm("你确认要删除名称为：" + studentname +"的学生吗？")
+        if (confirmation) {
+            setTimeout(function () {
+                window.location.href = '/StuManage/StuDelete?id=' + encodeURIComponent(studentId);
+            })
+        }
+    }
+</script>
+<!-- js placed at the end of the document so the pages load faster -->
+<script src="~/Content/js/jquery.js"></script>
+<script src="~/Content/js/bootstrap.min.js"></script>
+<script src="~/Content/js/jquery.scrollTo.min.js"></script>
+<script src="~/Content/js/jquery.nicescroll.js" type="text/javascript"></script>
+<script type="text/javascript" src="~/Content/assets/data-tables/jquery.dataTables.js"></script>
+<script type="text/javascript" src="~/Content/assets/data-tables/DT_bootstrap.js"></script>
+<!--common script for all pages-->
+<script src="~/Content/js/common-scripts.js"></script>
+<!--script for this page only-->
+<script src="~/Content/js/dynamic-table.js"></script>
+

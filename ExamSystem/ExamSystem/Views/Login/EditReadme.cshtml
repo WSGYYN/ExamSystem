@@ -1,10 +1,8 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "EditReadme";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var stuEdit = Model as ExamSystem.Models.Student;
 }
-
 <div class="container">
     <aside class="profile-nav col-lg">
         <form action="/Login/EditReadme" method="post">
@@ -16,27 +14,26 @@
                     <h1>@stuEdit.StuName 同学你好</h1>
                     <p>@stuEdit.StuEmail</p>
                 </div>
-
                 <ul class="nav nav-pills nav-stacked">
+                    <li hidden><input hidden type="text" name="StuID" value="@stuEdit.StuID" /></li>
                     <li><a> <i class="fa fa-user"></i><i>账号</i> <input type="text" name="StuLoginName" class="form-control" value="@stuEdit.StuLoginName"></a></li>
                     <li><a> <i class="fa fa-user-circle"></i><i>昵称</i> <input type="text" name="StuName" class="form-control" value="@stuEdit.StuName"></a></li>
                     <li><a> <i class="fa fa-lock"></i><i>密码</i> <input type="password" name="StuLoginPwd" class="form-control" value="@stuEdit.StuLoginPwd"></a></li>
-                    @if (stuEdit.StuSex == true)
-                    {
-                        <li><a> <i class="fa fa-venus-mars"></i><i>性别</i> <input type="text" name="StuSex" class="form-control" value="男"></a></li>
-                    }
-                    else
-                    {
-                        <li><a> <i class="fa fa-venus-mars"></i><i>性别</i> <input type="text" name="StuSex" class="form-control" value="女"></a></li>
-                    }
+                    <li>
+                        <a>
+                            <i></i><i class="fa fa-venus-mars"></i><i>性别</i>
+                            <select name="StuSex" class="form-control" id="gender">
+                                <option value="true" @(stuEdit.StuSex == true ? "selected" : "")>男</option>
+                                <option value="false" @(stuEdit.StuSex == false ? "selected" : "")>女</option>
+                            </select>
+                        </a>
+                    </li>
                     <li><a> <i class="fa fa-phone"></i><i>电话</i> <input type="text" name="StuPhone" class="form-control" value="@stuEdit.StuPhone"></a></li>
                     <li><a> <i class="fa fa-envelope"></i><i>邮箱</i> <input type="text" name="StuEmail" class="form-control" value="@stuEdit.StuEmail"></a></li>
                     <li><a> <i class="fa fa-graduation-cap"></i><i>班级</i> <input type="text" name="StuGrade" class="form-control" value="@stuEdit.StuGrade"></a></li>
                 </ul>
-
             </section>
             <input type="submit" class="btn btn-danger fa-pull-left" value="提交">
         </form>
     </aside>
 </div>
-
