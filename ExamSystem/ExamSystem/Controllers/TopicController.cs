@@ -11,11 +11,12 @@ namespace ExamSystem.Controllers
     {
         //题目管理
         // GET: Topic
-
+        private ExamDBEntities db=new ExamDBEntities();
 
         //查看指定试卷的所有题目
         public ActionResult TopicIndex(int ? id)
         {
+            var topic = db.Topic.ToList();
             return View();
         }
         

@@ -2,7 +2,74 @@
 @{
     ViewBag.Title = "TopicIndex";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    @model List<ExamSystem.Models.Topic>
 }
+<div class="row">
+    <div class="col-lg-12">
+        <section class="panel">
+            <header class="panel-heading">
+                Dynamic Table
+            </header>
+            <table class="table table-striped border-top" id="sample_1">
+                <thead>
+                    <tr>
+                        <th>topicname</th>
+                        <th class="hidden-phone">Email</th>
+                        <th class="hidden-phone">Points</th>
+                        <th class="hidden-phone">Joined</th>
+                        <th class="hidden-phone"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var topic in Model)
+                    {
+                        <tr class="odd gradeX">
+                            <td>@topic.TopicID</td>
+                            <td class="hidden-phone"><a href="mailto:@topic.TopicAnswer">@topic.TopicB</a></td>
+                            <td class="hidden-phone">@topic.TopicC</td>
+                            <td class="center hidden-phone">
+                                <button class="view-button" data-toggle="modal" data-target="#myModal" data-topicname="@topic.TopicA" data-email="@topic.TopicA" data-points="@topic.TopicA">查看选项</button>
+                            </td>
+                            <td class="hidden-phone"><span class="label label-success">Approved</span></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </section>
+    </div>
+</div>
 
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">信息展示</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <p>用户名：<span id="topicname"></span></p>
+                <p>邮箱：<span id="email"></span></p>
+                <p>积分：<span id="points"></span></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('.view-button').click(function() {
+            var topicname = $(this).data('topicname');
+            var email = $(this).data('email');
+            var points = $(this).data('points');
+
+            $('#topicname').text(topicname);
+            $('#email').text(email);
+            $('#points').text(points);
+        });
+    });
+</script>
 
 
