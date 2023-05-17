@@ -1,0 +1,502 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>在线考试系统</title>
+    <link href="~/Content/ExamContent/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/ExamContent/Site.css" rel="stylesheet" />
+    <link href="~/Content/ExamContent/bootstrapValidator.css" rel="stylesheet" />
+    <link href="~/Content/ElementUI/element-ui.css" rel="stylesheet" />
+    <script src="~/Content/ExamContent/jquery-3.4.1.js"></script>
+    <script src="~/Content/ExamContent/vue.js"></script>
+    <script src="~/Content/ExamContent/axios.js"></script>
+    <script src="~/Content/ExamContent/element-ui.js"></script>
+    <script src="~/Content/ExamContent/bootstrap.js"></script>
+    <script src="~/Content/ExamContent/bootstrapValidator.js"></script>
+</head>
+<body>
+    <div id="app">
+        <div id="content" class="container">
+            <!--页面内容部分-->
+            <section>
+                <div class="row" id="AnswerDetail">
+                    <div class="col-lg-2 col-10 col-xs-6 col-sm-5 " id="center-a" v-show="isTm" style="box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)">
+                        <!--按钮区-->
+                        <div style="max-height:220px; overflow-y: auto;">
+                            <label>答题记录  考试时间:{{Time}}</label>
+                            <div>
+
+                                <a v-for="(itme,index) in Detail" v-bind:key="itme.DetailID"
+                                   class="btn btn-light col-lg-2 col-xs-2 col-sm-2"
+                                   v-bind:class="{ 'btn-info': Charck[index] }"
+                                   v-on:click="isShow=index"
+                                   v-bind:href="'#T'+index"
+                                   style="margin:4px">
+                                    {{index+1}}
+                                </a>
+                            </div>
+                        </div>
+                        <el-row style="margin-top:5px">
+                            <el-col :span="12">
+                                <div class="grid-content bg-purple">
+                                    <el-button type="primary" v-on:click="submit">提交试卷</el-button>
+                                </div>
+                            </el-col>
+                            <el-col :span="12">
+                                <div class="grid-content bg-purple-light">
+                                    <el-button v-show="!isLock" v-on:click="isLock=true" type="success">展开试卷</el-button>
+                                    <el-button v-show="isLock" v-on:click="isLock=!true" type="success">收起作答</el-button>
+                                </div>
+                            </el-col>
+                        </el-row>
+
+                    </div>
+                    <div class="col-lg-10 col-lg-offset-1">
+                        <h2>在线考试</h2>
+                        <div class="row" v-if="is">
+                            <div class="col-lg-4 ">
+                                <h4>试卷描述</h4><hr />
+                                <label>试卷名称:</label> {{Answer[0].Paper.PaperName}}<br />
+                                <label>试卷介绍:</label> {{Answer[0].Paper.PaperExplain}}<br />
+                                <label>试卷时长:</label> {{Answer[0].Paper.PaperTime}} (分钟)<br />
+                            </div>
+                            <div class="col-lg-4">
+                                <h4>考生信息</h4><hr />
+                                <label>学生姓名:</label>  {{Answer[0].Student.StuName}}<br />
+                                <label>学生班级:</label>  {{Answer[0].Student.StuGrade}}<br />
+                            </div>
+                            <div class="col-lg-4">
+                                <label>距离考试结束还有: {{Time}}</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-3 col-lg-offset-9">
+                                <el-button type="primary" v-on:click="submit">提交试卷</el-button>
+                                <el-button v-show="!isLock" v-on:click="isLock=true" type="success">展开试卷</el-button>
+                                <el-button v-show="isLock" v-on:click="isLock=!true" type="success">收起作答</el-button>
+                            </div>
+                        </div>
+
+                        <fieldset v-if="is">
+                            <legend>答题区</legend>
+                            <div>
+                                <!--展示题号-->
+                                <div class="btn-group mr-2" role="group" aria-label="First group">
+
+                                    <a v-for="(itme,index) in Detail" v-bind:key="itme.DetailID"
+                                       class="btn btn-light"
+                                       v-bind:class="{ 'btn-info': Charck[index] }"
+                                       v-on:click="isShow=index"
+                                       v-bind:href="'#T'+index">
+
+                                        {{index+1}}
+                                    </a>
+                                </div>
+
+                            </div>
+                            <div v-if="!isLock">
+                                <div v-for="(itme,index) in Detail" v-bind:key="itme.DetailID" v-show="isShow==index">
+
+                                    <h3 v-bind:id="'T'+index">第 {{index+1}} 题 {{itme.Topic.TopicExplain}}  ({{itme.Topic.TopicScore}} 分)</h3>
+                                    <div v-if="itme.Topic.TopicType==1">
+                                        <!--单选题-->
+                                        <ul>
+                                            <li><input type="radio" v-bind:name="'T'+index" v-model="Dx[index]" v-on:click="tmClick(1,index,'A')" value="A" />{{itme.Topic.TopicA}}</li>
+                                            <li><input type="radio" v-bind:name="'T'+index" v-model="Dx[index]" v-on:click="tmClick(1,index,'B')" value="B" />{{itme.Topic.TopicB}}</li>
+                                            <li><input type="radio" v-bind:name="'T'+index" v-model="Dx[index]" v-on:click="tmClick(1,index,'C')" value="C" />{{itme.Topic.TopicC}}</li>
+                                            <li><input type="radio" v-bind:name="'T'+index" v-model="Dx[index]" v-on:click="tmClick(1,index,'D')" value="D" />{{itme.Topic.TopicD}}</li>
+                                        </ul>
+                                    </div>
+                                    <div v-if="itme.Topic.TopicType==2">
+                                        <!--判断题-->
+                                        <ul>
+                                            <li><input type="radio" v-bind:name="'T'+index" v-on:click="tmClick(2,index,1)" v-model="Pd[index]" value="1" />对</li>
+                                            <li><input type="radio" v-bind:name="'T'+index" v-on:click="tmClick(2,index,0)" v-model="Pd[index]" value="0" />错</li>
+                                        </ul>
+                                    </div>
+                                    <div v-if="itme.Topic.TopicType==3">
+                                        <!--问答题-->
+                                        <textarea class="form-control" v-bind:name="'T'+index" v-model="Wd[index]" v-on:blur="WdonBlur(index)" rows="5"></textarea>
+                                    </div>
+                                    <div v-if="itme.Topic.TopicType==4">
+                                        <!--多选题-->
+                                        <ul>
+                                            <li><input type="checkbox" v-bind:name="'T'+index" v-model="Fx[index][0]" v-on:click="FxClick(index,0,'A')" value="A" />{{itme.Topic.TopicA}}</li>
+                                            <li><input type="checkbox" v-bind:name="'T'+index" v-model="Fx[index][1]" v-on:click="FxClick(index,1,'B')" value="B" />{{itme.Topic.TopicB}}</li>
+                                            <li><input type="checkbox" v-bind:name="'T'+index" v-model="Fx[index][2]" v-on:click="FxClick(index,2,'C')" value="C" />{{itme.Topic.TopicC}}</li>
+                                            <li><input type="checkbox" v-bind:name="'T'+index" v-model="Fx[index][3]" v-on:click="FxClick(index,3,'D')" value="D" />{{itme.Topic.TopicD}}</li>
+                                        </ul>
+
+                                    </div>
+                                    <br />
+                                    <br />
+
+                                    <div class="col-lg-4 col-lg-offset-4">
+                                        <el-button-group>
+                                            <el-button type="primary" :disabled="isShow==0" icon="el-icon-arrow-left" v-on:click="isShow>0?isShow--:isShow==isShow">上一题</el-button>
+                                            <el-button type="primary" :disabled="isShow==Detail.length-1" v-on:click="isShow<Detail.length-1?isShow++:isShow==isShow">下一题<i class="el-icon-arrow-right el-icon--right"></i></el-button>
+                                        </el-button-group>
+                                    </div>
+                                </div>
+                            </div>
+                            <div v-if="isLock">
+                                <div v-for="(itme,index) in Detail" v-bind:key="itme.DetailID">
+                                    <h3 v-bind:id="'T'+index">第 {{index+1}} 题 {{itme.Topic.TopicExplain}}  ({{itme.Topic.TopicScore}} 分)</h3>
+                                    <div v-if="itme.Topic.TopicType==1">
+                                        <!--单选题-->
+                                        <ul>
+                                            <li><input type="radio" v-bind:name="'Dx'+index" v-model="Dx[index]" v-on:click="tmClick(1,index,'A')" value="A" />{{itme.Topic.TopicA}}</li>
+                                            <li><input type="radio" v-bind:name="'Dx'+index" v-model="Dx[index]" v-on:click="tmClick(1,index,'B')" value="B" />{{itme.Topic.TopicB}}</li>
+                                            <li><input type="radio" v-bind:name="'Dx'+index" v-model="Dx[index]" v-on:click="tmClick(1,index,'C')" value="C" />{{itme.Topic.TopicC}}</li>
+                                            <li><input type="radio" v-bind:name="'Dx'+index" v-model="Dx[index]" v-on:click="tmClick(1,index,'D')" value="D" />{{itme.Topic.TopicD}}</li>
+                                        </ul>
+                                    </div>
+                                    <div v-if="itme.Topic.TopicType==2">
+                                        <!--判断题-->
+                                        <ul>
+                                            <li><input type="radio" v-bind:name="'Pd'+index" v-on:click="tmClick(2,index,1)" v-model="Pd[index]" value="1" />对</li>
+                                            <li><input type="radio" v-bind:name="'Pd'+index" v-on:click="tmClick(2,index,0)" v-model="Pd[index]" value="0" />错</li>
+                                        </ul>
+                                    </div>
+                                    <div v-if="itme.Topic.TopicType==3">
+                                        <!--问答题-->
+                                        <textarea class="form-control" v-model="Wd[index]" v-on:blur="WdonBlur(index)" rows="5"></textarea>
+                                    </div>
+                                    <div v-if="itme.Topic.TopicType==4">
+                                        <!--多选题-->
+                                        <ul>
+                                            <li><input type="checkbox" v-bind:name="'T'+index" v-model="Fx[index][0]" v-on:click="FxClick(index,0,'A')" value="A" />{{itme.Topic.TopicA}}</li>
+                                            <li><input type="checkbox" v-bind:name="'T'+index" v-model="Fx[index][1]" v-on:click="FxClick(index,1,'B')" value="B" />{{itme.Topic.TopicB}}</li>
+                                            <li><input type="checkbox" v-bind:name="'T'+index" v-model="Fx[index][2]" v-on:click="FxClick(index,2,'C')" value="C" />{{itme.Topic.TopicC}}</li>
+                                            <li><input type="checkbox" v-bind:name="'T'+index" v-model="Fx[index][3]" v-on:click="FxClick(index,3,'D')" value="D" />{{itme.Topic.TopicD}}</li>
+                                        </ul>
+
+                                    </div>
+
+                                    <br />
+                                    <br />
+
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                </div>
+            </section>
+
+
+            <!--页脚-->
+            <div id="footer">
+                <hr style="margin:20px 0px;" /> 在线考试系统   版权所有 - 2023
+            </div>
+        </div>
+    </div>
+    <script>
+        new Vue({
+            el: "#AnswerDetail",
+            data: {
+                is: false,
+                AnswerID: 7,
+                Answer: [],
+                Detail: [],//题目
+                Charck: [],
+                Dx: [],//单选题答案
+                Pd: [],//判断题
+                Wd: [],//问答题
+                Fx: [],//复选题
+                FF: [],
+                isShow: 0,
+                finishList: [],//完成的集合
+                isLock: false,
+                time: 0,
+                Time: "",
+                timer: {},//定时器
+                timer2: {},//定时提交
+                isSubmit: false,//是否提交过
+                isTm: false,//显示答题卡
+                w: 0,
+
+            },
+            methods: {
+
+
+
+                get() {
+                    this.AnswerID = this.getQueryVariable("AnswerID");
+
+
+                    axios.get("/AnswersApi/GetInfo", {
+                        params: {
+                            AnswerID: this.AnswerID
+                        }
+                    }).then(r => {
+                        this.Answer = r.data;
+                        console.log(r.data);
+                        this.time = this.Answer[0].Paper.PaperTime * 60;
+                        this.timer = setInterval(this.setTime, 1000);
+
+                    });
+
+                    axios.get("/DetailApi/GetAll", {
+                        params: {
+                            AnswerID: this.AnswerID
+                        }
+                    }).then(r => {
+                        this.Detail = r.data;
+                        console.log(r.data);
+
+
+                        //赋值给继续考试
+                        for (var i = 0; i < this.Detail.length; i++) {
+                            var arr = new Array();
+                            arr[0] = false;
+                            arr[1] = false;
+                            arr[2] = false;
+                            arr[3] = false;
+
+                            this.Fx.push(arr);
+                            if (this.Detail[i].Topic.TopicType == 1) {
+                                this.Dx[i] = this.Detail[i].DetailAnswer;
+                            } else if (this.Detail[i].Topic.TopicType == 2) {
+                                this.Pd[i] = this.Detail[i].DetailAnswer;
+                            } else if (this.Detail[i].Topic.TopicType == 4) {
+                                ////多选题处理
+                                var dd = this.Detail[i].DetailAnswer;
+                                if (dd == null || dd == "") {
+                                    continue;
+                                }
+                                if (dd.indexOf("A") != -1) {
+                                    this.Fx[i][0] = true;
+                                }
+                                if (dd.indexOf("B") != -1) {
+                                    this.Fx[i][1] = true;
+                                }
+                                if (dd.indexOf("C") != -1) {
+                                    this.Fx[i][2] = true;
+                                }
+                                if (dd.indexOf("D") != -1) {
+                                    this.Fx[i][3] = true;
+                                }
+
+                            }
+                            else {
+                                this.Wd[i] = this.Detail[i].DetailAnswer;
+                            }
+                            if (this.Detail[i].DetailAnswer != null) {
+                                this.finishList[i] = 1;
+                                this.Charck[i] = true;
+                                this.is = false;
+                                this.is = true;
+                            }
+
+                        }
+                        this.is = true;
+                        //5秒提交一次
+                        this.timer2 = setInterval(this.timeSubmit, 5000);
+                    });
+
+                },
+
+                //js获取陆游参数
+                getQueryVariable(variable) {
+                    var query = window.location.search.substring(1);
+                    var vars = query.split("&");
+                    for (var i = 0; i < vars.length; i++) {
+                        var pair = vars[i].split("=");
+                        if (pair[0] == variable) { return pair[1]; }
+                    }
+                    return (false);
+                },
+                //下一题
+                next() {
+                    this.isShow++;
+                },
+                tmClick(type, index, data) {
+                    this.Charck[index] = true;
+                    this.finishList[index] = 1;
+                    if (type == 1) {
+                        this.Dx[index] = data;
+                    }
+                    if (type == 2) {
+                        this.Pd[index] = data;
+                    }
+                    if (type == 4) {
+
+                        console.log(this.Fx[index]);
+                    }
+                    this.is = false;
+                    this.is = true;
+                },
+                //多选处理
+                FxClick(i, j, data) {
+                    this.Charck[i] = true;
+                    this.finishList[i] = 1;
+                    this.Fx[i][j] = !this.Fx[i][j];
+                    console.log(this.Fx[i]);
+                    this.is = false;
+                    this.is = true;
+                },
+                WdonBlur(index) {
+                    if (this.Wd[index] != "" || this.Wd[index] != null) {
+                        this.Charck[index] = true;
+                        this.finishList[index] = 1;
+                    }
+                },
+                submit() {
+                    var itme = 1;
+                    var sum = 0;
+                    for (var i = 0; i < this.Detail.length; i++) {
+
+                        itme *= this.finishList[i];
+                        if (this.finishList[i] != 1) {
+                            sum++;
+                        }
+                        if (this.Detail[i].Topic.TopicType == 1) {
+                            this.Detail[i].DetailAnswer = this.Dx[i];
+                        } else if (this.Detail[i].Topic.TopicType == 2) {
+                            this.Detail[i].DetailAnswer = this.Pd[i];
+                        }
+                        else if (this.Detail[i].Topic.TopicType == 4) {
+                            this.Detail[i].DetailAnswer = "";
+                            if (this.Fx[i][0]) {
+                                this.Detail[i].DetailAnswer += "A,";
+                            }
+                            if (this.Fx[i][1]) {
+                                this.Detail[i].DetailAnswer += "B,";
+                            }
+                            if (this.Fx[i][2]) {
+                                this.Detail[i].DetailAnswer += "C,";
+                            }
+                            if (this.Fx[i][3]) {
+                                this.Detail[i].DetailAnswer += "D,";
+                            }
+                            this.Detail[i].DetailAnswer = this.Detail[i].DetailAnswer.substring(0, this.Detail[i].DetailAnswer.length - 1);
+                            console.log(this.Detail[i].DetailAnswer);
+                        }
+                        else {
+                            this.Detail[i].DetailAnswer = this.Wd[i];
+                        }
+
+                    }
+
+                    if (itme == 1 || this.time <= 0) {
+                        //请求
+                        this.postDate();
+                        this.submit = true;
+                    } else {
+                        this.$message({
+                            message: '还有' + sum + '个题没有完成，请完成后再提交',
+                            type: 'warning'
+                        });
+
+                    }
+                },
+
+                compound() {
+                    for (var i = 0; i < this.Detail.length; i++) {
+
+                        if (this.Detail[i].Topic.TopicType == 1) {
+                            this.Detail[i].DetailAnswer = this.Dx[i];
+                        } else if (this.Detail[i].Topic.TopicType == 2) {
+                            this.Detail[i].DetailAnswer = this.Pd[i];
+                        } else if (this.Detail[i].Topic.TopicType == 4) {
+                            this.Detail[i].DetailAnswer = "";
+                            if (this.Fx[i][0]) {
+                                this.Detail[i].DetailAnswer += "A,";
+                            }
+                            if (this.Fx[i][1]) {
+                                this.Detail[i].DetailAnswer += "B,";
+                            }
+                            if (this.Fx[i][2]) {
+                                this.Detail[i].DetailAnswer += "C,";
+                            }
+                            if (this.Fx[i][3]) {
+                                this.Detail[i].DetailAnswer += "D,";
+                            }
+                            this.Detail[i].DetailAnswer = this.Detail[i].DetailAnswer.substring(0, this.Detail[i].DetailAnswer.length - 1);
+                            console.log(this.Detail[i].DetailAnswer);
+                        }
+                        else {
+                            this.Detail[i].DetailAnswer = this.Wd[i];
+                        }
+                    }
+                },
+                postDate() {
+                    console.log(this.Detail);
+
+                    axios({
+                        url: "/Details/PostAll",
+                        method: 'POST',
+                        data: { Detail: this.Detail, type: "1" }
+
+                    }).then(r => {
+                        this.$notify({
+                            title: '提交成功',
+                            message: '你已完成考试',
+                            type: 'success'
+                        });
+                        window.location.href = "/Exam/MyAnswer"
+                    });
+                },
+                //刷新倒计时
+                setTime() {
+                    let t = this.time;
+                    this.Time = parseInt(t / 3600) + ":" + parseInt((t % 3600) / 60) + ":" + parseInt((t % 3600) % 60);
+                    if (this.time == 5 * 60) {
+                        this.$notify({
+                            title: '提示',
+                            message: '距离考试结束还有5分钟，请抓紧试卷作答!',
+                            duration: 0
+                        });
+                    }
+                    if (t <= 0) {
+                        //考试结束
+                        clearInterval(this.timer);
+                        this.submit();
+                    }
+                    this.time--;
+                },
+                //定时提交
+                timeSubmit() {
+                    this.compound();
+                    axios.post("/Details/PostAll", { Detail: this.Detail, type: 0 }).then(r => {
+                        console.log(r.data)
+                    });
+
+                },
+                //滚动监听
+                scrollHeigh() {
+                    this.h = document.documentElement.scrollTop || document.body.scrollTop;
+                    if (this.h > 400) {
+                        this.isTm = true;
+                    } else this.isTm = false;
+                }
+            },
+            created() {
+                this.get();
+            },
+            beforeDestroy() {
+                clearInterval(this.timer);
+                clearInterval(this.timer2);
+
+            },
+            destroyed() {
+                clearInterval(this.timer);
+                clearInterval(this.timer2);
+                window.removeEventListener("scroll", this.scrollHeigh);
+            },
+            //注册事件
+            mounted() {
+                //滚动监听
+                window.addEventListener("scroll", this.scrollHeigh);
+            }
+
+
+        });
+    </script>
+
+</body>
+</html>

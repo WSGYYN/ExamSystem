@@ -1,0 +1,99 @@
+﻿
+@{
+    ViewBag.Title = "TeAnswer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var da = Model as List<ExamSystem.Models.Answer>;
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <section class="panel">
+            <header class="panel-heading">
+                评审试卷
+            </header>
+            <table class="table table-striped border-top" id="sample_1">
+                <thead>
+                    <tr>
+                        <th  class="hidden-phone">学生姓名</th>
+
+                        <th class="hidden-phone">试卷名称</th>
+                        <th class="hidden-phone">批卷状态</th>
+                        <th class="hidden-phone">分数</th>
+
+                        <th class="hidden-phone">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var i in da)
+                    {
+                        <tr class="odd gradeX">
+
+                            <td  class="center hidden-phone">@i.Student.StuName</td>
+                            <td class="center hidden-phone">@i.Paper.PaperName</td>
+                            <td class="center hidden-phone">
+                                @if (i.AnswerState == 0)
+                                {
+                                    <span>答题中</span>
+                                }
+                                else if (i.AnswerState == 1)
+                                {
+                                    <span>未批卷</span>
+                                }
+                                else if (i.AnswerState == 2)
+                                {
+                                    <span>已批卷</span>
+                                }
+                            </td>
+                            <td class="center">
+                                @if (i.AnswerState == 2)
+                                {
+                                    <span>@i.AnswerScore</span>
+                                }
+                                else
+                                {
+                                    <span>-</span>
+                                }
+                            </td>
+                            <td>
+                                @if (i.AnswerState == 2)
+                                {
+                                    <button class="btn btn-success btn-xs" data-toggle="tooltip" data-placement="top" title="查看详细" onclick="redirectToDetails('@i.AnswerID')">
+                                        <i class="fa fa-eye">查看详细</i>
+                                    </button>
+                                }
+                                else if (i.AnswerState == 1)
+                                {
+                                    <button class="btn btn-warning btn-xs" data-toggle="tooltip" data-placement="top" title="审卷" onclick="redirectToYuePaper('@i.AnswerID')">
+                                        <i class="fa fa-pencil">审卷</i>
+                                    </button>
+                                }
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </section>
+    </div>
+</div>
+<script>
+    function redirectToDetails(AnswerID) {
+        window.location.href = '/Exam/TeAnswerDetail?AnswerID=' + encodeURIComponent(AnswerID);
+    }
+    function redirectToYuePaper(AnswerID) {
+        window.location.href = '/Exam/TeAnswerDetail?AnswerID=' + encodeURIComponent(AnswerID);
+    }
+    
+</script>
+
+<!-- js placed at the end of the document so the pages load faster -->
+<script src="~/Content/js/jquery.js"></script>
+<script src="~/Content/js/bootstrap.min.js"></script>
+<script src="~/Content/js/jquery.scrollTo.min.js"></script>
+<script src="~/Content/js/jquery.nicescroll.js" type="text/javascript"></script>
+<script type="text/javascript" src="~/Content/assets/data-tables/jquery.dataTables.js"></script>
+<script type="text/javascript" src="~/Content/assets/data-tables/DT_bootstrap.js"></script>
+<!--common script for all pages-->
+<script src="~/Content/js/common-scripts.js"></script>
+<!--script for this page only-->
+<script src="~/Content/js/dynamic-table.js"></script>

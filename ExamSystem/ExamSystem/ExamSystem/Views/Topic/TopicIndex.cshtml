@@ -1,0 +1,144 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <section class="panel">
+            <header class="panel-heading">
+                查看考题
+                <button class="btn btn-success btn-xs" data-toggle="tooltip" data-placement="top" title="查看考题" onclick="redirectToAddTopic('@ViewBag.pid')">
+                    <i class="fa fa-plus-square">为当前试卷添加考题</i>
+                </button>
+            </header>
+            <table class="table table-striped border-top" id="sample_1">
+                <thead>
+                    <tr>
+                        <th>题目编号</th>
+                        <th class="hidden-phone">题干</th>
+                        <th class="hidden-phone">得分</th>
+                        <th class="hidden-phone">题型</th>
+                        <th class="hidden-phone">选项与答案</th>
+                        <th class="hidden-phone">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model as IList<ExamSystem.Models.Topic>)
+                    {
+                        <tr class="odd gradex">
+                            <td class="hidden-phone">@item.TopicID</td>
+                            <td class="hidden-phone">@item.TopicExplain</td>
+                            <td class="hidden-phone">@item.TopicScore</td>
+                            <td class="hidden-phone">
+                                @if (item.TopicType == 1)
+                                {
+                                    <span>单选题</span>
+                                }
+                                else if (item.TopicType == 4)
+                                {
+                                    <span>多选题</span>
+                                }
+                                else if (item.TopicType == 2)
+                                {
+                                    <span>判断题</span>
+                                }
+                                else
+                                {
+                                    <span>问答题</span>
+                                }
+                            </td>
+                            <td class="hidden-phone">
+                                <!-- 添加触发按钮 -->
+                                <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#@item.TopicID">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                                <div class="modal fade" id="@item.TopicID" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title" id="myModalLabel">选型与答案</h4>
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                            </div>
+                                            <div class="modal-body" id="modal-body">
+                                                @if (item.TopicType == 1 || item.TopicType == 4)
+                                                {
+                                                    <p>选型A：<span>@item.TopicA</span></p>
+                                                    <p>选项B：<span>@item.TopicB</span></p>
+                                                    <p>选型C：<span>@item.TopicC</span></p>
+                                                    <p>选型D：<span>@item.TopicD</span></p>
+                                                }
+                                                
+                                                @if (item.TopicType == 2 && item.TopicAnswer == "0")
+                                                {
+                                                    <p>答案：<span>正确</span></p>
+                                                }
+                                                else if (item.TopicType == 2 && item.TopicAnswer == "1")
+                                                {
+                                                    <p>答案：<span>错误</span></p>
+                                                }
+                                                else
+                                                {
+                                                    <p>答案：<span>@item.TopicAnswer</span></p>
+                                                }
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <button class="btn btn-default btn-block" onclick="redirectToEdit('@item.TopicID', '@item.PaperID')">修改题目内容</button>
+                                                        <button type="button" class="btn btn-default btn-block" data-dismiss="modal">关闭</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="hidden-phone">
+                                <button class="btn btn-danger btn-xs" data-toggle="tooltip" data-placement="top" title="删除" onclick="redirectToDelete('@item.TopicID', '@item.PaperID')">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </section>
+    </div>
+</div>
+
+<script>
+    function redirectToDelete(TopicID, PaperID) {
+        var confirmation = confirm("你确认要删除编号为：" + TopicID + "的试题吗？")
+        if (confirmation) {
+            setTimeout(function () {
+                window.location.href = '/Topic/TopicDelete?id=' + encodeURIComponent(TopicID) + '&pid=' + encodeURIComponent(PaperID);
+            })
+        }
+    }
+    function redirectToAddTopic(pid) {
+        window.location.href = '/Topic/TopicAdd?pid=' + encodeURIComponent(pid);
+    }
+    function redirectToEdit(TopicID, PaperID) {
+        window.location.href = '/Topic/TopicEdit?id=' + encodeURIComponent(TopicID) + '&pid=' + encodeURIComponent(PaperID);
+    }
+</script>
+
+
+
+
+<!-- js placed at the end of the document so the pages load faster -->
+<script src="~/Content/js/jquery.js"></script>
+<script src="~/Content/js/bootstrap.min.js"></script>
+<script src="~/Content/js/jquery.scrollTo.min.js"></script>
+<script src="~/Content/js/jquery.nicescroll.js" type="text/javascript"></script>
+<script type="text/javascript" src="~/Content/assets/data-tables/jquery.dataTables.js"></script>
+<script type="text/javascript" src="~/Content/assets/data-tables/DT_bootstrap.js"></script>
+<!--common script for all pages-->
+<script src="~/Content/js/common-scripts.js"></script>
+<!--script for this page only-->
+<script src="~/Content/js/dynamic-table.js"></script>
+

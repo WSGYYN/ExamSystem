@@ -1,0 +1,137 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>TeAnswerDetail</title>
+    <link href="~/Content/ExamContent/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/ExamContent/Site.css" rel="stylesheet" />
+    <link href="~/Content/ExamContent/bootstrapValidator.css" rel="stylesheet" />
+    <link href="~/Content/ElementUI/element-ui.css" rel="stylesheet" />
+    <script src="~/Content/ExamContent/jquery-3.4.1.js"></script>
+    <script src="~/Content/ExamContent/vue.js"></script>
+    <script src="~/Content/ExamContent/axios.js"></script>
+    <script src="~/Content/ExamContent/element-ui.js"></script>
+    <script src="~/Content/ExamContent/bootstrap.js"></script>
+    <script src="~/Content/ExamContent/bootstrapValidator.js"></script>
+</head>
+<body>
+    <div id="app">
+        <div id="content" class="container">
+            <!--页面内容部分-->
+            <section>
+                <div class="row" id="TeAnswerDetail">
+                    <div class="col-lg-10 col-lg-offset-1">
+                        <h2>审卷</h2>
+
+                        <div class="row" v-if="is">
+                            <div class="col-lg-4 ">
+                                <h4>试卷描述</h4><hr />
+                                <label>试卷名称:</label> {{Answer[0].Paper.PaperName}}<br />
+                                <label>试卷介绍:</label> {{Answer[0].Paper.PaperExplain}}<br />
+                                <label>试卷时长:</label> {{Answer[0].Paper.PaperTime}} (分钟)<br />
+
+                            </div>
+                            <div class="col-lg-4">
+                                <h4>考生信息</h4><hr />
+                                <label>学生姓名:</label>  {{Answer[0].Student.StuName}}<br />
+                                <label>学生班级:</label>  {{Answer[0].Student.StuGrade}}<br />
+                                <label> 交卷时间：</label> {{Answer[0].AnswerTime.replace("T"," ")}}
+                                <br />
+                            </div>
+                        </div>
+                        <fieldset v-if="is">
+                            <legend>答题区</legend>
+                            <ul>
+                                <li v-for="itme in Detail" v-bind:key="itme.DetailID">
+                                    <span style="font-weight:bold"> {{itme.Topic.TopicExplain}}</span> ( {{itme.Topic.TopicScore}} 分)
+                                    <ul style="padding-left:30px;">
+                                        <li>
+                                            <span style="color:blue;">学生的答案是： </span>
+
+                                            <span style="color:green" v-if="itme.DetailAnswer==itme.Topic.TopicAnswer">{{itme.DetailAnswer}} ✔</span>
+                                            <span style="color:red" v-else>{{itme.DetailAnswer}} ✘</span>
+                                        </li>
+                                        <li><span style="color:red;">正确答案是：{{itme.Topic.TopicAnswer}}</span></li>
+                                    </ul>
+                                </li>
+
+                            </ul>
+                            <div style="font-size:30px;color:red;padding:10px 50px" v-if="Answer[0].AnswerState==2">
+                                <span> 分数：{{Answer[0].AnswerScore}} </span>
+                            </div>
+                            <div style="font-size:30px;color:red;padding:10px 50px" v-else>
+                                <a :href="'/Exam/Verify/'+AnswerID"> 提交审核 </a>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+            </section>
+            <!--页脚-->
+            <div id="footer">
+                <hr style="margin:20px 0px;" /> 在线考试系统   版权所有 - 2023
+            </div>
+        </div>
+    </div>
+    <script>
+            new Vue({
+                el: "#TeAnswerDetail",
+                data: {
+                    is: false,
+                    AnswerID: "",
+                    Answer: [],
+                    Detail: [],
+
+
+                },
+                methods: {
+                    get() {
+                        this.AnswerID = this.getQueryVariable("AnswerID");
+                        axios.get("/AnswersApi/GetInfo", {
+                            params: {
+                                AnswerID: this.AnswerID
+                            }
+                        }).then(r => {
+                            this.Answer = r.data;
+                            console.log(r.data);
+                        });
+
+                        axios.get("/DetailApi/GetAll", {
+                            params: {
+                                AnswerID: this.AnswerID
+                            }
+                        }).then(r => {
+                            this.Detail = r.data;
+                            console.log(r.data);
+                            this.is = true;
+                        });
+
+
+
+                    },
+                    //js获取陆游参数
+                    getQueryVariable(variable) {
+                        var query = window.location.search.substring(1);
+                        var vars = query.split("&");
+                        for (var i = 0; i < vars.length; i++) {
+                            var pair = vars[i].split("=");
+                            if (pair[0] == variable) { return pair[1]; }
+                        }
+                        return (false);
+                    }
+                },
+                created() {
+                    this.get();
+                }
+
+            });
+    </script>
+
+
+</body>
+</html>

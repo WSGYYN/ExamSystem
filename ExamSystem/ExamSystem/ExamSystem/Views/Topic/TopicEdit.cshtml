@@ -1,0 +1,168 @@
+﻿
+@{
+    ViewBag.Title = "TopicEdit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/Content/element-ui/lib/theme-chalk/index.css" />
+<div id="app">
+    <div class="container">
+        <aside class="profile-nav col-lg">
+            <ul class="nav nav-pills nav-stacked">
+                <section class="panel">
+                    <div class="user-heading round">
+                        <h1>当前选择的试卷为：@ViewBag.paperName</h1>
+                        <h1>修改考题</h1>
+                    </div>
+                    <div class="margin-1">
+                        <el-form ref="form" class="margin-1" :model="form" :rules="rules" label-width="80px" style="max-width: 500px; margin: 20px auto;">
+                            <el-form-item label="题干" prop="TopicExplain">
+                                <el-input v-model="form.TopicExplain"></el-input>
+                            </el-form-item>
+                            <el-form-item label="得分" prop="TopicScore">
+                                <el-input v-model="form.TopicScore"></el-input>
+                            </el-form-item>
+                            <el-form-item label="选项类型" prop="TopicType">
+                                <el-select v-model="form.TopicType" placeholder="请选择" @@change="handleOptionTypeChange">
+                                    <el-option label="单选" value="1"></el-option>
+                                    <el-option label="多选" value="4"></el-option>
+                                    <el-option label="问答" value="3"></el-option>
+                                    <el-option label="判断" value="2"></el-option>
+                                </el-select>
+                            </el-form-item>
+                            <div v-if="form.TopicType === '1' || form.TopicType === '4'">
+                                <el-form-item label="选项A:" prop="TopicA">
+                                    <el-input v-model="form.TopicA"></el-input>
+                                </el-form-item>
+                                <el-form-item label="选项B:" prop="TopicB">
+                                    <el-input v-model="form.TopicB"></el-input>
+                                </el-form-item>
+                                <el-form-item label="选项C:" prop="TopicC">
+                                    <el-input v-model="form.TopicC"></el-input>
+                                </el-form-item>
+                                <el-form-item label="选项D:" prop="TopicD">
+                                    <el-input v-model="form.TopicD"></el-input>
+                                </el-form-item>
+                                <el-form-item label="答案" prop="TopicAnswer">
+                                    <el-input v-model="form.TopicAnswer"></el-input>
+                                </el-form-item>
+                            </div>
+                            <div v-if="form.TopicType === '3'">
+                                <!-- 显示一个输入框 -->
+                                <el-form-item label="答案" prop="TopicAnswer">
+                                    <el-input v-model="form.TopicAnswer"></el-input>
+                                </el-form-item>
+                            </div>
+                            <div v-if="form.TopicType === '2'">
+                                <!-- 显示一个下拉框 -->
+                                <el-form-item label="答案" prop="TopicAnswer">
+                                    <el-select v-model="form.TopicAnswer" placeholder="请选择">
+                                        <el-option label="正确" value="0"></el-option>
+                                        <el-option label="错误" value="1"></el-option>
+                                    </el-select>
+                                </el-form-item>
+                            </div>
+                            <el-form-item label="排序" prop="TopicSort">
+                                <el-input v-model="form.TopicSort"></el-input>
+                            </el-form-item>
+                            
+                                
+                            
+                            <el-form-item>
+                                <el-button type="primary" @@click="submitForm()">修改</el-button>
+                            </el-form-item>
+                        </el-form>
+                    </div>
+                </section>
+            </ul>
+        </aside>
+    </div>
+</div>
+<!-- import Vue before Element -->
+<script src="~/Content/vue/dist/vue.js"></script>
+<!-- import JavaScript -->
+<script src="~/Content/element-ui/lib/index.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data() {
+            return {
+                form: {
+                    TopicID: '@ViewBag.TopicID',
+                    TopicExplain: '@ViewBag.TopicExplain',
+                    TopicScore: '@ViewBag.TopicScore',
+                    TopicType: '@ViewBag.TopicType',
+                    TopicA: '@ViewBag.TopicA',
+                    TopicB: '@ViewBag.TopicB',
+                    TopicC: '@ViewBag.TopicC',
+                    TopicD: '@ViewBag.TopicD',
+                    TopicSort: '@ViewBag.TopicSort',
+                    TopicAnswer: '@ViewBag.TopicAnswer',
+                    PaperID:'@ViewBag.PaperID'
+                },
+                rules: {
+                    TopicExplain: [
+                        { required: true, message: '请输入题干', trigger: 'blur' }
+                    ],
+                    TopicScore: [
+                        { required: true, message: '请输入得分', trigger: 'blur' }
+                    ],
+                    TopicType: [
+                        { required: true, message: '请选择类型', trigger: 'blur' }
+                    ],
+                    TopicA: [
+                        { required: true, message: '请输入选择A', trigger: 'blur' }
+                    ],
+                    TopicB: [
+                        { required: true, message: '请输入选择B', trigger: 'blur' }
+                    ],
+                    TopicC: [
+                        { required: true, message: '请输入选择C', trigger: 'blur' }
+                    ],
+                    TopicD: [
+                        { required: true, message: '请输入选择D', trigger: 'blur' }
+                    ],
+                    TopicSort: [
+                        { required: true, message: '请输入序号', trigger: 'blur' }
+                    ],
+                    TopicAnswer: [
+                        { required: true, message: '请输入答案', trigger: 'blur' }
+                    ]
+                }
+            }
+        },
+        methods: {
+            submitForm() {
+                this.$refs.form.validate((valid) => {
+                    if (valid) {
+                        console.log(valid)
+                        console.log(this.form)
+                        // 表单验证通过，可以进行注册逻辑
+                        axios.post('/Topic/TopicEdit', this.form)
+                            .then(response => {
+                                // 处理API返回的响应数据
+                                alert('考题修改成功！');
+                                window.location.href = '/Topic/TopicIndex?id=' + encodeURIComponent(@ViewBag.PaperID);
+
+                            })
+                            .catch(error => {
+                                // 处理错误
+                                console.error('修改失败:', error);
+                                this.$message.error('修改失败，请检查是否题干重复！');
+                            });
+                    } else {
+                        // 表单验证不通过，提示错误信息
+                        this.$message.error('请检查表单填写！');
+                    }
+                });
+            }
+        }
+    });
+</script>
+<style>
+    .margin-1 {
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+</style>
+

@@ -1,0 +1,109 @@
+﻿
+
+body {
+    font-size: 14px;
+}
+
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+a {
+    color: blue;
+    text-decoration: none;
+}
+
+#loginmsg a {
+    color: white;
+}
+
+a:hover {
+    color: red;
+}
+
+ul {
+    list-style: inside;
+}
+
+    ul li {
+        padding: 5px 20px;
+    }
+
+        ul li ul {
+            padding-left: 0px 30px;
+        }
+
+/*页眉*/
+#header {
+    background-image: url('../img/top_bg.gif');
+}
+
+#logo {
+    width: 250px;
+    height: 42px;
+    float: left;
+    background-image: url('../img/top_table_leftbg.gif');
+    text-shadow: 5px 2px 6px #000;
+}
+
+#logotxt {
+    padding-left: 30px;
+    font-size: 28px;
+    color: white;
+    font-weight: bold;
+    text-shadow: 2px 2px 2px #808080;
+}
+
+#loginmsg {
+   
+    text-align: right;
+    float: right;
+    padding: 10px 40px 5px 0px;
+}
+/*菜单,内容框*/
+#menu {
+   
+}
+
+#content {
+    background-color: white;
+    border-radius: 6px 0px 6px 6px;
+    
+   
+}
+
+#menu ul {
+    margin-top: 10px;
+}
+
+    #menu ul li {
+        float: right;
+        list-style: none;
+    }
+
+        #menu ul li a {
+            display: block;
+            border-bottom: 3px solid #4e9ccf;
+            border-left: 3px solid #4e9ccf;
+            border-top: 3px solid #4e9ccf;
+            border-radius: 6px 6px 0 0;
+            padding: 5px 10px;
+            color: #1619a0;
+            font-weight: bold;
+            font-family: "微软雅黑";
+            background-color: #ffffff;
+        }
+/*页脚*/
+#footer {
+    padding: 30px 0px;
+    text-align: center;
+}
+#center-a {
+    background-color: white;
+    position: fixed;
+    right: 10px;
+    top: 28%;
+    padding: 5px;
+    z-index: 1;
+}

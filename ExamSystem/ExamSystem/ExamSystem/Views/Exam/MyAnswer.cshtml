@@ -1,0 +1,112 @@
+﻿
+@{
+    ViewBag.Title = "MyAnswer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var da = Model as List<ExamSystem.Models.Answer>;
+}
+<div class="row">
+    <div class="col-lg-12">
+        <section class="panel">
+            <header class="panel-heading">
+                我的考试记录
+            </header>
+            <table class="table table-striped border-top" id="sample_1">
+                <thead>
+                    <tr>
+                        <th class="hidden-phone">考生姓名</th>
+                        <th class="hidden-phone">作答试卷</th>
+                        <th>试卷状态</th>
+                        <th class="hidden-phone">得分</th>
+                        <th class="hidden-phone">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var i in da)
+                    {
+                        <tr class="odd gradeX">
+                            <td class="center hidden-phone">@i.Student.StuName</td>
+                            <td class="center hidden-phone">@i.Paper.PaperName</td>
+                            @{
+                                var type = "";
+                                var item = 0;
+                                if (i.AnswerState == 2)
+                                {
+                                    type = "已阅卷";
+                                }else if (i.AnswerState == 0)
+                                {
+                                    type = "答题中";
+                                    item = 1;
+                                }
+                                else
+                                {
+                                    type = "未阅卷";
+                                }
+                            }
+                            <td class="center">@type</td>
+                            <td class="center">@i.AnswerScore</td>
+                            <td>
+                                @if (i.AnswerState == 0)
+                                {
+                                    <button class="btn btn-success btn-xs" data-toggle="tooltip" data-placement="top" title="查看详情" >
+                                        <i class="fa fa-info-circle">查看详情</i>
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button class="btn btn-success btn-xs" data-toggle="tooltip" data-placement="top" title="查看详情" onclick="redirectToDetails('@i.AnswerID')">
+                                        <i class="fa fa-info-circle">查看详情</i>
+                                    </button>
+                                }
+                                @if (item == 1)
+                                {
+                                    <button class="btn btn-warning btn-xs" data-toggle="tooltip" data-placement="top" title="删除" onclick="redirectToAge('@i.PaperID', '@i.AnswerID')">
+                                        <i class="fa fa-play">继续答题</i>
+                                    </button>
+                                }
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </section>
+    </div>
+</div>
+<script>
+    //function redirectToDetails(PaperID) {
+    //    window.location.href = '/Topic/TopicIndex?id=' + encodeURIComponent(PaperID);
+    //}
+    //function redirectToEdit(PaperID) {
+    //    window.location.href = '/Paper/EditPaper?id=' + encodeURIComponent(PaperID);
+    //}
+    //function redirectToDelete(paperId, paperName) {
+    //    var confirmation = confirm("你确认要删除名称为：" + paperName + "的试卷吗？")
+    //    if (confirmation) {
+    //        setTimeout(function () {
+    //            window.location.href = '/Paper/DeletePaper?id=' + encodeURIComponent(paperId);
+    //        })
+    //    }
+    //}
+    //继续答题
+    function redirectToAge(PaperID, AnswerID) {
+        window.location.href = '/Exam/BeginAnswer?pid=' + encodeURIComponent(PaperID) + '&aid=' + encodeURIComponent(AnswerID);
+    }
+    //查看详情
+    function redirectToDetails(AnswerID) {
+        window.location.href = '/Exam/MyAnswerDetail?AnswersID=' + encodeURIComponent(AnswerID);
+    }
+
+</script>
+
+<!-- js placed at the end of the document so the pages load faster -->
+<script src="~/Content/js/jquery.js"></script>
+<script src="~/Content/js/bootstrap.min.js"></script>
+<script src="~/Content/js/jquery.scrollTo.min.js"></script>
+<script src="~/Content/js/jquery.nicescroll.js" type="text/javascript"></script>
+<script type="text/javascript" src="~/Content/assets/data-tables/jquery.dataTables.js"></script>
+<script type="text/javascript" src="~/Content/assets/data-tables/DT_bootstrap.js"></script>
+<!--common script for all pages-->
+<script src="~/Content/js/common-scripts.js"></script>
+<!--script for this page only-->
+<script src="~/Content/js/dynamic-table.js"></script>
+

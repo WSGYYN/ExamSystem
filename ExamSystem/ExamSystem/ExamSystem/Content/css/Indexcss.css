@@ -1,0 +1,27 @@
+﻿
+.center-rectangle {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    height: 150px;
+    background-color: rgba(245, 245, 245, 0.8); /* 使用RGBA颜色设置半透明背景 */
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* 将圆角矩形的层级设置为较高的值 */
+}
+
+.carousel {
+    position: relative;
+    z-index: 1; /* 将轮播图的层级设置为较低的值 */
+}
+
+
+.welcome-text {
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+}
